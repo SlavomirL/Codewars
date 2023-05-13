@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class MexicanWave {
 
@@ -35,5 +37,14 @@ public class MexicanWave {
         }
         return resultsAsList.toArray(new String[0]);
     }
+
+    /* Method from Codewards giving the same* output but by using Stream. *The output is not really the same because this code ignores the upper case letters from the original str, means this solution is a bit better */
+//    public static String[] wave(String str) {
+//        return IntStream
+//                .range(0, str.length())
+//                .mapToObj(x -> new StringBuilder(str).replace(x, x+1, String.valueOf(str.charAt(x)).toUpperCase()).toString())
+//                .filter(y -> !y.equals(str))
+//                .toArray(String[]::new);
+//    }
 
 }
