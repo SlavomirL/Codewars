@@ -1,0 +1,1115 @@
+package advent.day1;
+
+/*
+* --- Day 1 hard: Trebuchet?! ---
+Same logic as Day 1 normal, but now you have to recognize written digits like four or seven etc.
+* */
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Day1Hard {
+    static String input = "kjrqmzv9mmtxhgvsevenhvq7\n" +
+            "four2tszbgmxpbvninebxns6nineqbqzgjpmpqr\n" +
+            "rkzlnmzgnk91zckqprrptnthreefourtwo\n" +
+            "fouronevzkbnzm6seven47\n" +
+            "zphgdcznqsm2\n" +
+            "4gjnmxtrbflgp71\n" +
+            "4sqvv1cnpn\n" +
+            "8sevengzfvjrhnsb6ddb8ninerkgkxthtfkvbcmqs\n" +
+            "1seven336\n" +
+            "86one34vvvgdngbt39\n" +
+            "37qdmsqzsq72clfntfxqfrhbxtmfourzcjxfmmfz\n" +
+            "3rxgts\n" +
+            "skhcdbnrninethree5\n" +
+            "qtkhfdsixnine3bvpcpmjbzjonefivethree3\n" +
+            "seven4six51zlrvqmbgpzplxtk6ptcr\n" +
+            "eightczxhbntwo9sl83\n" +
+            "42m1ndvqkz16seven\n" +
+            "three9oneeightmqbtwo\n" +
+            "vt81pzcchsvz\n" +
+            "eight6349jr\n" +
+            "8czmcdhjzpsbpjgngdvtxczgsl6th36\n" +
+            "gbddhhhhkgjltwothree57\n" +
+            "pjjlddnvtwo884\n" +
+            "eight5fbcxqlqkplm\n" +
+            "cdzgbtxbzl43vvnx\n" +
+            "onefxtprsml8fqptvmfthreesix2jbeightwor\n" +
+            "nine8twolrpzp\n" +
+            "eightvjdzfmqlvceightnine6rlpzkdmk\n" +
+            "8tqmjgpfzrnineeightpcfltmzn8\n" +
+            "9nnnh\n" +
+            "49onefour7fivezchhjrpbmteightwokrs\n" +
+            "7zqhjkjkmm7448\n" +
+            "ninebndfdjbxx9sixltsjbsbgone45kpcln\n" +
+            "zhqkrndh5\n" +
+            "p61five44cvgxlgkdseven\n" +
+            "8two4kpdxdf\n" +
+            "two773t1rcdvxldjrjjq\n" +
+            "lnqhgfivebdhpshzfiveonefivejsqzzdxq7\n" +
+            "72vlqqdtwo4xdzlreight7\n" +
+            "27zpq4one\n" +
+            "xczj475\n" +
+            "2two3seven9rshkhrjzlv2\n" +
+            "onethree222\n" +
+            "fgeight6threegkjcgzjsfxqksgqvhnrhqf\n" +
+            "sixsix8twotwoone\n" +
+            "five3qr3two\n" +
+            "76zxcjmfq\n" +
+            "xchtklzgtwo4lbvnsix\n" +
+            "cffmlvmsvnlrtgkstmqsdone9mdlkdgpgeightwogd\n" +
+            "3onethree\n" +
+            "lrdtfive3six\n" +
+            "foursixsixntwoeightthree9zmcmxdn\n" +
+            "threefmqjzhzdseight8dfkbstnineeighttlzhjrrgcl7\n" +
+            "7msqnfdbbseventwofivesixrrqgsvxn3\n" +
+            "64dlmxn\n" +
+            "3two7vrv2rlqc4nine\n" +
+            "rmxqpktrxsixsix634\n" +
+            "tjlrqkj1\n" +
+            "dthree2qhhnbeight5two\n" +
+            "zjvvmskpnclgnfnjqr7\n" +
+            "two425zfiveeightjmhznf\n" +
+            "113njjz\n" +
+            "pdchljrdrlntkdn1pc8\n" +
+            "5twom9hpmbggpeightjnddsfbfpsslvvt\n" +
+            "one52ctrkkc\n" +
+            "dnbtwovcvxggsbsix219\n" +
+            "fivetjmg5sevenjp\n" +
+            "131\n" +
+            "8two9khfl\n" +
+            "threethreetcghqbv3rbnsdsk4sevennine\n" +
+            "stlttkxrsninetwolftchdtcrpfivelmsmgcdpprqx1qh\n" +
+            "sptb46rtrzhcmbf3seven7\n" +
+            "six6tntbjjtsdnczlnbeightlsfplsqq6\n" +
+            "33bldlptj2twosevenxk\n" +
+            "five8snvmzqcksix7\n" +
+            "vx49six\n" +
+            "three7sixfourfxfcljfdhfl6fgktbsxxrrp\n" +
+            "4csxnkvmdnfive2rkkppdqln\n" +
+            "dpxhgssggqoneqsvp9eightjvgjrjbd9eight\n" +
+            "five6xrrzpdp8five44hqxqbnhxslrjfh\n" +
+            "fkpcdb2sltktfghhmxdtxxffssxztjngkthree4\n" +
+            "ndhcxeightthree3\n" +
+            "qrrslbfxklbxnine99lcdtpbf\n" +
+            "mvmcg5three\n" +
+            "g9one\n" +
+            "2ninegdsix3kb9ninerssqbpxgs\n" +
+            "blfclcvsh8seventwo8fourznjjssvtlg\n" +
+            "ppjdvrxb6eight37cnqmgl9dghbrgrnine\n" +
+            "nine6zzcvprthreefive\n" +
+            "8fourshkcchfb4sixlv\n" +
+            "9tpqqs3qxvqhqmb2\n" +
+            "fljrhvnr722threetpghbftdt\n" +
+            "2five2bhhq\n" +
+            "18jhhzczcncjnjjx\n" +
+            "jgvzzrklz8svzfcgzgggseven\n" +
+            "8rdjdvmvcheightrvkpcmjnshhltgghf41\n" +
+            "9three4cffsxc5vhcvdcqtv\n" +
+            "86tghvbgthreebkrgf6one\n" +
+            "331s2twonep\n" +
+            "rtvz4bsdzqeightwodth\n" +
+            "3vggdskpcdjfivezpjgrfsqone4z85\n" +
+            "xsftxsrk6threeconesevenncvs8nine\n" +
+            "3two2xjrqhrzjv\n" +
+            "smdmb1gnlbvkq5nrmqmc\n" +
+            "qmmpthreenine7sixczhlfttvphzkbqnm\n" +
+            "2rmsrzrbgfjrones\n" +
+            "81bmfddsmngkqpq5zsnrcnhqt\n" +
+            "two1lzf4two\n" +
+            "4sixonetwobzvll\n" +
+            "eightpggvssixfivelpm4three1hz\n" +
+            "77nine3ninefive7\n" +
+            "oneninerhplrfsxlltwonineszhdqskt9\n" +
+            "lxvtzvjzrreight931\n" +
+            "38z\n" +
+            "zfxtdnbqtwoseven1grtpbonenk\n" +
+            "fivesixkbzcbvcn76pdclljqsix18\n" +
+            "mrxtfour5vkkmshbmpx2fourtwocpdzkmspqxqrvf\n" +
+            "8sevenfiveqvbsnine\n" +
+            "onetcdfdtnsthree21four\n" +
+            "3zqcbvdftwotttfdvtmtxvhrsixtwo\n" +
+            "lqmxvcplqs8bhsixb97\n" +
+            "bmvxz27sixtwocvhtmqlls73\n" +
+            "five1lvzzbv\n" +
+            "5oneqdcztvjsqmjf6\n" +
+            "61hjj4onetqlgkllr\n" +
+            "sixthree9five\n" +
+            "8sevenjqgvlfoureightqnghxptsmc6xmrrnzd\n" +
+            "ftjbhzkmvtwooneninenine9sevenqgb\n" +
+            "onesixtworksmtc3\n" +
+            "3oner65\n" +
+            "3trmpzmc622\n" +
+            "seven14\n" +
+            "xfgbmsixeight6twocsevenzx6\n" +
+            "3xfdpbpnzzkdrbmrdjrtsrvx37\n" +
+            "nflclprfgnt7\n" +
+            "fiventkj8three4twolkrztseven\n" +
+            "19tbgcfourseven\n" +
+            "9onefour54seven\n" +
+            "hkmfqcnpncfzgrplqq9xqklcb\n" +
+            "ninemxhkpspbqn69zmlsbtsevensixfive4\n" +
+            "zvfmhfjflscnqskzgnz74jlxrzm3\n" +
+            "fiveeightvdqtlcfzzrpfd7eightwosn\n" +
+            "2nineone7fourninethreeeightsix\n" +
+            "ppzf4five9threeseven\n" +
+            "six1kzczzlssp84three\n" +
+            "885dlzlnnfth1xthreetfm\n" +
+            "vqmntfbqgt6four57six5\n" +
+            "mqgmbp3\n" +
+            "threesix3one33seven\n" +
+            "46sixptwoone1vnnqlmrr\n" +
+            "vvmcjdbjbthreeljznqhh5ztwodj8eight\n" +
+            "rxhxx6ninesixeightrxffqrgdqx\n" +
+            "ninefive2twoccpxbfcfkzpzhsf243\n" +
+            "fourmvxpxsglhthreeone4jlgsfvxhmmjt1eight\n" +
+            "9crfpmnine19four6vkbsdfqn\n" +
+            "6ninekxjcfxfthreejpfmtjjbeightone\n" +
+            "xknxrr6threeglmjzxpvxmfivethreezn\n" +
+            "7five737\n" +
+            "1qstxdtctlk94gtnqvfxmbjtnlkconetlkdmqgrxz\n" +
+            "6mgqtjq\n" +
+            "4pt\n" +
+            "eightjkdl54one5eighttwofour\n" +
+            "ttjblsrrl2three\n" +
+            "mtwone8onethreecprdhtdgxvdqcptplmsixtwo\n" +
+            "tqlkbkjrclseven9lprrcpnxv5zs\n" +
+            "seven94mgljdpp8fourfour\n" +
+            "htxchhjv6fivethree\n" +
+            "gprqsxbnlpls2two\n" +
+            "7cjtrglplbm7pdbvjtnineonerqnkt8\n" +
+            "8onezjrxcsfjfoursz2seven\n" +
+            "mcrpvnlsix8fourdblmxkhcsx\n" +
+            "413zsixhbsxqsplhz\n" +
+            "fxqthree99\n" +
+            "onenine46twotwoeight5three\n" +
+            "2559nhlsgmknq\n" +
+            "sevenonexzxgxkhvln1v\n" +
+            "68\n" +
+            "7dcbpcxrm87crhzlmfgk58\n" +
+            "36one81foursevenfourpcnjgf\n" +
+            "eightxlbgssonerjfone7ztfftmn2one\n" +
+            "eightzkvcbzmceight5four\n" +
+            "four79ninefive9sixh5\n" +
+            "2lmggjph5eight\n" +
+            "ninetwojhzxf5kpfp\n" +
+            "7xvnbfbzpspbfxlpsfrzteightqtvdxnlkp2seven8\n" +
+            "lgblvsjdrnjqfgxlfqh37852six\n" +
+            "jtrnmqseven6bqbsdvtzd8ppzmnfmdhkrd\n" +
+            "seven5seven676fivelctxb\n" +
+            "mctbkczczspvhjfhfivesix3gtnqgkjzc3\n" +
+            "psnhmjsix9\n" +
+            "four4nlrhxflrrtxsixeightwosk\n" +
+            "npkxv1grrrrbcsbq67538\n" +
+            "35thrcjrkrdptwo\n" +
+            "klsnbcjfpdsrfnsclvnfczjfsixqpdhmmfmcqfive4bmtpctone\n" +
+            "zxkncsrktnrv74eighttwonine\n" +
+            "jdmfscrdlbj2brseighteight\n" +
+            "8ktjrzprt8khpvszbtn\n" +
+            "547jrxkhmheightfour\n" +
+            "fivetwobpjrjczflhljvdlhl9fivernglhclznzfq\n" +
+            "threenzlvrgjonenjbqnlfxhmfourone4mdnld\n" +
+            "6jbzzxsix9ninefivebdjmgnzcqqckkl\n" +
+            "gone6sevencdmrdbrgh\n" +
+            "cssoneighthmmxvqvbfflkjsixone361\n" +
+            "5onekpsevendcrzcgcs7hfvffksqr11\n" +
+            "mfxjbzn9\n" +
+            "6nine4\n" +
+            "cbljjfthree42sixkss5b\n" +
+            "36pvqf2cmvvzzdfour8\n" +
+            "ntwone84three\n" +
+            "twothree745seven4rsdlbtkoneightrbj\n" +
+            "sixfivexfzfjhnzpfv8vz\n" +
+            "four8five\n" +
+            "bpqrcnj3\n" +
+            "45przmdflrrd\n" +
+            "zcbpzhzq2nvjsk\n" +
+            "xbrdcttltxnhdfgh33fivepthree\n" +
+            "seven5six\n" +
+            "3three21tlfxhmlkqx9\n" +
+            "sixkdxjtskknd1nrgbqxjsixbznjqhpfz2\n" +
+            "eighthsfnljrpvqnzpkninebbbjfcshfq5one\n" +
+            "nzqbqklqlsixseven56twoonethreeone\n" +
+            "nfsixeight5jflseveneight3\n" +
+            "sevensevenp63twoonevxlsgmcfvk\n" +
+            "fourgncfdfoursix5mnlhvvml\n" +
+            "sixseven66hrqjbkvfrjkmbg\n" +
+            "339lnhgjzxbdmfh\n" +
+            "pvdnppdt3bxxqvdc\n" +
+            "sixmqrcvtzdtsb4\n" +
+            "two9xtsv5\n" +
+            "fourdvt1\n" +
+            "two2cbpqfgszpgbkrrbbnjzh1sixfourtqkns\n" +
+            "sevennine6451oneninefourtwonenn\n" +
+            "vbxrslkfour7four4qsmlhqvm3\n" +
+            "foureightc3kjvmgtc6eightseven\n" +
+            "oneone8bcpmdfcszz4kmrfrd\n" +
+            "sixcqpbffcsctccd281sevensixeight\n" +
+            "6kxbhq5mnvt9cpbcpzslg77\n" +
+            "cpjfplxvpzqfng4four516three\n" +
+            "3eightlnqzzsfhmndftc72\n" +
+            "six2xsdhxgdlfnonenine46sevenseven\n" +
+            "qdpdrkrt754\n" +
+            "5twosevenninerg6ninefcvgdtk\n" +
+            "six31twox8sevenfourone\n" +
+            "8eighthplftwo\n" +
+            "41ninejdcvrlplk\n" +
+            "9hlnjcjjgdrhvmpvbmdzcmmzjtj2six\n" +
+            "3vpvdeighttwo\n" +
+            "4sznqlshqmninefourseven\n" +
+            "eightthreeseven7\n" +
+            "sevenfourzsfjplg1sevenfour\n" +
+            "34zbrvfjqckr8cknzsmpqc1seven7seven\n" +
+            "21shklthree59two\n" +
+            "7fivefive1gdtf8\n" +
+            "8gzfnxsp6hlpr\n" +
+            "nineznbgntvcqjtft24threerkp1jlrdjhlg\n" +
+            "3414zzrxbgdvmp\n" +
+            "fbjzjffour3lxzmck9\n" +
+            "lsccprmgh1\n" +
+            "33two6ppjhfkcxpthreejm\n" +
+            "sixsevenseven33\n" +
+            "3rphhpfdbh1cbmonetwo7five\n" +
+            "8hqmcqxcj6two1eighthbkcvvvt\n" +
+            "63fourrtfztfvonesevenseven1\n" +
+            "d9ggdsxgnxvdlqhclgstn7\n" +
+            "5fourskvdvntzgmrmsgxqzd\n" +
+            "11onenine4eightsix\n" +
+            "three4sixkrgfour9fourtwol\n" +
+            "8seven2pthreetjxzhrzvxrrfpdfnxsdbshrtnqgmzxsg\n" +
+            "twonzbbtjkvtbcxrtszxmdtffkdndzqdfffxckznine5\n" +
+            "two5rljthree64n8seven\n" +
+            "fourninetwopnhzzrdmng4\n" +
+            "7vfivemlqgctmzrk\n" +
+            "85d7onefour1\n" +
+            "9nine6xddqgvth3six6\n" +
+            "fjszdfnmg7one\n" +
+            "m2\n" +
+            "threenqglsjplgbpsixfour7fourninefive\n" +
+            "4bszvrqdvninesix6seveneightmfrgnxftkvchk\n" +
+            "xnstcjndqzthvczfninendvksmmzzxsjt5\n" +
+            "413f9sevenninesix\n" +
+            "21mthreethree\n" +
+            "fourmpsgpone6txh376eightwods\n" +
+            "onetwo1ninefourfive4twohbb\n" +
+            "7hpxlcsh7\n" +
+            "cqtwoneonelgjmxxjkv8\n" +
+            "6threetwotwo93nn\n" +
+            "1fmbdzfkkcg\n" +
+            "4mqfpxjhmmzfive9sixsevenhckjrrzxqcxnfppjchrh\n" +
+            "55xcxtfour\n" +
+            "gbpcvzsklsix7eight\n" +
+            "83seventwoseven7ninetwo7\n" +
+            "hdstztbpg8twofbtfeightninemzgrx\n" +
+            "78kzbqq3686bsnmvnchts5\n" +
+            "689113fbgjtjd\n" +
+            "nine1threesevenninefour\n" +
+            "6sevenfxrhbxktxfive\n" +
+            "3lhpktqh89two4bpheight\n" +
+            "85three1dgvtjtg6cdtkhccnhhjfbsxdc\n" +
+            "ninebvvhmlkrkllhjsl4five1\n" +
+            "four7pvbvqjxsnfh\n" +
+            "882qtlk\n" +
+            "8onetk7eight8four4\n" +
+            "cpkjmtpone68twojcmjbfsj7sixtwo\n" +
+            "nineslzthree8fqtfckjdkl3\n" +
+            "6five9pkl\n" +
+            "1nine48dlxscmvsvpxtcsqhpfxn2\n" +
+            "22fourthree\n" +
+            "8dstsdqpffkfivegqmrvqr\n" +
+            "6rbdxrvxhsix44\n" +
+            "34three\n" +
+            "dnkmhlzq4seven9\n" +
+            "5twohpxxfive8eight\n" +
+            "5eightz\n" +
+            "jmmzbfk8ltkksfbbskcdrrgfnz21\n" +
+            "eight1zqzr92two56\n" +
+            "bvvmeight4twofour\n" +
+            "147gfslhl\n" +
+            "dmfz59qsqmxngqxdlbhcxrqbonesix\n" +
+            "nine8eight\n" +
+            "3ttzjhjdcqk\n" +
+            "62nine64ninebktrj15\n" +
+            "mkdfdzxkbfctv47\n" +
+            "vvhsvgjhhonenl7mrhdskxfrr\n" +
+            "oneeightgqtp7fiverkvqjtsdeight1nine\n" +
+            "eightonethree416gbqgnf\n" +
+            "seven144\n" +
+            "twoeightpprtlffourfive5jfjdvcvkd8\n" +
+            "jppmcvlzrg96\n" +
+            "8eightonesevenzcvknjfvdkhrrzfmeight9\n" +
+            "cm97three2\n" +
+            "eightzptfnlgpfive6prrgtjone7vbnfml\n" +
+            "threethree1ljbsfqcrsix\n" +
+            "njnpsxlfivenine28two\n" +
+            "95dneightsevenxdtzbk86\n" +
+            "eightm399lthreeoneqbjjjtwonef\n" +
+            "2kzxgfmcseven6qv7eight\n" +
+            "bkrkfdfqbbcl84sevenfourpjf\n" +
+            "552\n" +
+            "lmccgmxbzfour16zlbrrcgpln\n" +
+            "nine7ngkjczfv7ktmvvgqb\n" +
+            "qcqtseventwolg8\n" +
+            "foursrbl91rsvtlbqdn6five\n" +
+            "sixhvszbkncglchflsevenoneone4fivenmrcgkkvpk\n" +
+            "1threetwofive4fiveeight\n" +
+            "seven8ghsqbmfzvpzbvvrtmxnhf\n" +
+            "4sixfive\n" +
+            "3six3sixfourseven5\n" +
+            "hsbprzpjfhflrggjdpdsn23five\n" +
+            "zzjqrc7\n" +
+            "737rmjmftkrdkvgs6five\n" +
+            "sevenseven81\n" +
+            "four69hdsevensix\n" +
+            "jjgqr5pqtwo3one5cgkftvz\n" +
+            "seven3threeseven1n6\n" +
+            "7ninenxktnbfiveeighthqmfdlkb\n" +
+            "cgrztlh4gsdfjqzqvr2znxzkrjrkmd2eight1\n" +
+            "87eightfourdjbbjkpfpqrqmtfdhjrrfive\n" +
+            "qqbglmxcsix8vftfivefvpfivevzvtz\n" +
+            "fourpcksixjslx26six7\n" +
+            "mfgleightc15frgtvxdnfour37\n" +
+            "67qbqpsgfcfgsccdt4\n" +
+            "cfpjlxh16\n" +
+            "21sixslgcrgc3two\n" +
+            "kmgfivextrdeightnine8sl\n" +
+            "6eight62fivekj2clfk3\n" +
+            "fivetwo5three6\n" +
+            "9rzdrhvf4\n" +
+            "62fivetsceightfive6\n" +
+            "847gnmgjjksvdbkklpqsbfbzsffmm\n" +
+            "cdtbhbfvgkkh7vhbcqkbjkkcrkhxfive\n" +
+            "7onethree3pnsfbhqsgpkgvncs26\n" +
+            "2jkfqkc\n" +
+            "sevensixztcfmt88\n" +
+            "nineeightxsfivekfv5\n" +
+            "5one5\n" +
+            "48jjvh4rprbgqzpgr\n" +
+            "23six\n" +
+            "vztbppbsevenfive88gpmgjkq\n" +
+            "2hpnxbssr\n" +
+            "2jkgvrsevenntvzdkjzsmnjtcllttbxrnddmjceight\n" +
+            "snn2cmvphzbbjlphrdkpqnqssixtwo\n" +
+            "threeeightrbeightsevenkcfpn5qjmjbtc\n" +
+            "l4four\n" +
+            "2two1\n" +
+            "two6zmzvkx5nine\n" +
+            "sccjntwo9\n" +
+            "6twothree9nineq\n" +
+            "nine749sevensmvggvmfxghvmp5\n" +
+            "4six7sixeight9\n" +
+            "3seventwoxjmh76gllshjm6\n" +
+            "threesevenxkftjzmpc6\n" +
+            "rs4onefhnzkt\n" +
+            "6dprgnfhhfhnglddzksbk922\n" +
+            "oneninejgcmvkkhxtsrmgqvninerpqmlmm89\n" +
+            "cdvvddhxc1dtrzjl7nine9rxxkgb\n" +
+            "71chdqhbzps8sj\n" +
+            "nkqpjmvjkzeightfourthree9sevenfqffcpbdsfks\n" +
+            "kjtzdpxnmcvcsixbzcvdnzhnbkn7\n" +
+            "3xnvkmxqhgnzfour5\n" +
+            "4sevenxftdgseven94phsgkflqbpgjs\n" +
+            "98jhbgtdlrmjonesix\n" +
+            "86625three2one\n" +
+            "onefoursixone8bphb6\n" +
+            "eighthkzfnllhk3onethreezfttbtqljd8\n" +
+            "peightcfdlhk9dvdtmbqgcone\n" +
+            "ninefqtnjkqvrfbj8nine5\n" +
+            "5vtsntrvfivelpfln3kpkskrbrhbnhrncthree\n" +
+            "nine6rpdsrkhzrqthreegkdlhxvzvfzmfive4krbdxjxtjr\n" +
+            "eightseven3nine8threethree\n" +
+            "sixdvqlt5zp3threemszxfdfiveone\n" +
+            "hrtwovfive8ssfmbfsztwodthdlrxtjfive\n" +
+            "qmlzrzfj2ccvztbn314\n" +
+            "xvcgcljm6seven6\n" +
+            "two7787fivesnine1\n" +
+            "twodlhhsqseven8twosevenfour9\n" +
+            "gktrrqrffg6sixkpbtldbzj35seven14\n" +
+            "8fivexnxsseven6hjdbbhxlt\n" +
+            "cfzmmoneninefour4\n" +
+            "823eighteighthsonenzt\n" +
+            "4four6eightkdqljeightthree\n" +
+            "5jdpdgml22four\n" +
+            "6threefive7eightlzdlcxfvthgrlm7mjkmx\n" +
+            "6pldrbjfceightbnktrtqgtrxbt\n" +
+            "b5seventhreexl\n" +
+            "194zgeight54\n" +
+            "7threethreez1sixthreetwonemr\n" +
+            "zcnltvvhjr5vvdvkbnn2\n" +
+            "frcdgbkjmqqzshjkfsixzxkgvmfrkfxqjpbgn5zgsn\n" +
+            "sixonenine6\n" +
+            "twotwoninenine6ttxh\n" +
+            "nine4three32\n" +
+            "four9three6bgbsqq\n" +
+            "seventrseven1three7jxsmnrnlgdf\n" +
+            "2sfflb\n" +
+            "twohfcr5one\n" +
+            "fivetwohgrqtbhx619twonedv\n" +
+            "9lcsvtveightninerfxkxvzgpl\n" +
+            "sixeight6sixfivethreeoneqj\n" +
+            "dfourktxv2msshb8seven12\n" +
+            "sgljk4\n" +
+            "mjgk11eightrlbqpdl\n" +
+            "jfdrflpxh489bkjtlj\n" +
+            "pftppcr85three\n" +
+            "onefivemfsfk3five\n" +
+            "5x7twoseven\n" +
+            "cqkz8sevenfiveninefnbrht2nine\n" +
+            "ninehhm2three986foureight\n" +
+            "63ljkvtrtwo9g\n" +
+            "dqfour95fiveseven6\n" +
+            "8twozthreetwofive\n" +
+            "six91fhzjs\n" +
+            "1slknxtrv\n" +
+            "psxvkdcsdldxjninejfzblssv5z\n" +
+            "bczst26r\n" +
+            "btoneight79fninejvhvdccnhtwo\n" +
+            "onejcnlqmnhjeight34z5\n" +
+            "clbqcdmzc4mjlxgfournineddtlj6\n" +
+            "1pqqphfgqv5nine\n" +
+            "five2tvzshsixfive\n" +
+            "8ninedhvzbsvcqgone\n" +
+            "bqlgonesix7\n" +
+            "75bltzpqpntwosixtwo\n" +
+            "onefxlvlqseven47twoslgffq\n" +
+            "nsrnltmf4\n" +
+            "mgshfseven33\n" +
+            "2p24\n" +
+            "jklglqrone3qmjbdgpgzmznd\n" +
+            "eight23fkgb2\n" +
+            "187two\n" +
+            "vlvncjgmqtwo5771sixftz\n" +
+            "lzr9\n" +
+            "chrshzthree5641nine\n" +
+            "rnnqlfgfmpscnmgjqvq84\n" +
+            "gzltjddjpb937\n" +
+            "ninethree5\n" +
+            "fouronehvmmfrcgjcnmgcgkjnctnvvqftmdgzds89\n" +
+            "6xjone244\n" +
+            "ninefour8four\n" +
+            "49threeq95five\n" +
+            "gpeightwothree8lsjgjfourninehseven5\n" +
+            "2kfmzscsvssseveneightsevennine7bfct6\n" +
+            "cbmtfpvsevenvsbbcpkzlqlgsixfghzrnn28\n" +
+            "eightpslnsnnonemqxmmhch42six\n" +
+            "2one42bgllqb2\n" +
+            "rjshlfvkkgqzsnttwo3vfourgkplcs\n" +
+            "eight96\n" +
+            "16qng4fiveseventhreenine\n" +
+            "bldtndftseven9qhhxgmgxd2\n" +
+            "219ninebklfrvppfmzrjnv9g\n" +
+            "jvzdghjjv298zkssjc714\n" +
+            "1eighteight\n" +
+            "onejkzeight7seven\n" +
+            "37five4\n" +
+            "zxqrfpr7lnsqmcrtxkpvxkzjgdsmncvqhvrmnvqzkl\n" +
+            "1dxfivepqbvrp3\n" +
+            "krpjpfxbrstwosixkr3dceightwoj\n" +
+            "5nineeightjbfzclpdjone2threebddbpxrcjf\n" +
+            "rqlfljnktwo57\n" +
+            "tsleightwocdzzmgpxsix4seven\n" +
+            "xdvrspvzbx2\n" +
+            "jlbvjskhsnttvzdlhsveightthree9\n" +
+            "5one7jlsnzbbbzxkvrtd\n" +
+            "foureight6rpsrtrrzcnvtc8mdqzdxnrsqtcxkskd\n" +
+            "gtdxgdj2jlhfltkbmq45zhqcqmzbfninenrvvqcj\n" +
+            "seventwoeightonebkcbxqpdhn42\n" +
+            "rrqchvstrmfive3mzmvcrprssbvthrg1twotwo\n" +
+            "414nmdkhgfive7seven1llbpxdv\n" +
+            "eightfivecflctsdvs262nineseven\n" +
+            "sixfive71sthtxdgbbtntqpqnltmf83\n" +
+            "kboneighttwordldqjvvkh4ctntmtvsv\n" +
+            "jxmdndmtxhqndfptmnine8three3\n" +
+            "cvmqjmbsm2c3onecvftwofourtwo\n" +
+            "one7fkckcjknb2l\n" +
+            "onefnbtgpqkghcxlgthreevvlxp94jdrgfvpmf\n" +
+            "eightjxktztgfgpnine1threexgfklt\n" +
+            "six1llzdnkvn4twotwo\n" +
+            "7mfnnptwosix2five\n" +
+            "qgzftjcdgs45fivezzvrtjonep\n" +
+            "boneightnxggjksdcg8\n" +
+            "2three7mfqvtzlk\n" +
+            "fxg8gsffbl84pjvk\n" +
+            "sixpj5\n" +
+            "4qbvpfqrnplq2snsfive1hnmkxgszqdseven\n" +
+            "9sixcjnqgxtzh4\n" +
+            "2sxmbjxfive2\n" +
+            "9kqcndbqfvs\n" +
+            "kvrhxlsbqh7fivethreemmflkfq\n" +
+            "khonesix28\n" +
+            "nineeightvhncnbtbp68fone\n" +
+            "8eightnine\n" +
+            "four71eight\n" +
+            "nnvonethreepktq8threed\n" +
+            "x373one\n" +
+            "flv3nlzxszdbhbdcntp\n" +
+            "vm76xr\n" +
+            "pksrznbsfg4\n" +
+            "7twobsxjrz1eighttscqzfl\n" +
+            "6sixoneightnc\n" +
+            "bnvvfour7sixzgxxgctdvfive\n" +
+            "qrxoneight7vsdlprzmvneight\n" +
+            "5blqzhrdr8ptwoseven7twonefh\n" +
+            "j8\n" +
+            "three3938ninethree8\n" +
+            "ctvc2\n" +
+            "sixqdmvtwosixpfour3\n" +
+            "86xqkfzzn\n" +
+            "dcjxcj4sevenkglhzcthreesvbkcgxkg\n" +
+            "sixcqncsgn6cqfvcl28three\n" +
+            "4five6fivetwothreehtpfqvfnvteight\n" +
+            "rdcmt3\n" +
+            "4eightzxxfvrp4sixz\n" +
+            "sixsevenhcf13qfdnnqml\n" +
+            "sevenqzflnkpppvdln5mcztone\n" +
+            "twosixqdqdscpzfvzxx4\n" +
+            "seven3six\n" +
+            "48four8\n" +
+            "kmsflcqndhnl3onedqfkd7seven\n" +
+            "lrtdllmlz3smpvmhsggfjrvheight42fl\n" +
+            "vpftvkgzmjl57qgvlsd5\n" +
+            "bkbrkjtpmtwo2gpmkjxnxlfive\n" +
+            "eight7three8twonbl\n" +
+            "nflq6nine4qrpzclr7\n" +
+            "onefour1hjndfpkndthreetwo2\n" +
+            "gphthpbfeightmsvtdp2six\n" +
+            "98two6threemqnscvg3seven\n" +
+            "kbrqglhqseven3onetwo13\n" +
+            "rvzddkzftqlnine8hngltmmz\n" +
+            "fkeightseven52hptcfivengnrj2\n" +
+            "7sevenfivefourrdbdxh7\n" +
+            "pnjpbvlrd2jfivexflcbseven\n" +
+            "four887seven9lc2\n" +
+            "4sixlsxxlqqvpxxhrlhqc\n" +
+            "cq5four8\n" +
+            "7threedzdp527eighthxjtzfxv\n" +
+            "bdlhgonexrjsfvxghxxchcdd3dpltbbklpvbszm4\n" +
+            "6twonineeightkvhlhlfm\n" +
+            "nine6krqqzfive\n" +
+            "eight8qzkhfhm\n" +
+            "3eightsevennine\n" +
+            "eightx38fourf88\n" +
+            "qkjxldk8418n\n" +
+            "r15xhtkntq6nxcqvrmfpbvcponeone\n" +
+            "ztgf92\n" +
+            "five9vbqlbvkksixtwoone9\n" +
+            "onevjbktjqn4onebxml1gckfssxst63\n" +
+            "fhrhvvst9fivefourxmspzh\n" +
+            "3six191dbxtkm\n" +
+            "mq5vczknqlqdd4eightvpv\n" +
+            "ffourthree4\n" +
+            "four4rvcrlbb96\n" +
+            "95ninelttmq9\n" +
+            "9fivetwothree71five7oneightrt\n" +
+            "zvhmfqbzfjtrv19h\n" +
+            "57eightvmqfvrjg9\n" +
+            "r2lszmztwo\n" +
+            "5919xj\n" +
+            "jkmrvxgmzrflqtzkc44onenjftxgm3\n" +
+            "pmjpbdxpgctkninelpgrdjkrrzdpf2\n" +
+            "dxveightwo6psqffzhc5jc\n" +
+            "seven5ftzpsvcfzhhtgpdtghpxfmhfjvppkone\n" +
+            "822oneoneoneightct\n" +
+            "mhzjmppgh7cqpxkmdtlthree1vgkqxcfvpgtwo\n" +
+            "78bbrbspqpjkjcprh\n" +
+            "eight7hdgm\n" +
+            "rpvrvrqtgc87\n" +
+            "6oneqcntnrblvqmm2\n" +
+            "nbsoneight7\n" +
+            "hxfzqzqvsnfive4five44ctbldgcpg\n" +
+            "fxvnkksjcz77threemgcgzfrbqzdqtfgnine\n" +
+            "qcl45q17\n" +
+            "3gdqztrfjcmz\n" +
+            "threebkcvccgsrrp77onetwoccrmtwo\n" +
+            "1vmvqqjg58onetwoeight\n" +
+            "jknhpr85stqcsfbrbm\n" +
+            "three941rlqcpcjmffivecqgzbzjl\n" +
+            "44dnnvrlgqsixone\n" +
+            "4kkxgggmcbn4bqjrcvdbd4vcgxsvsrk\n" +
+            "8fivemgvrcxlhsix4\n" +
+            "twobvccclhj6vtzfhtwofiveninehqsnvcxgfourtwonexrv\n" +
+            "3sixvzzdkblrhlgbplqkqeightsnlncvqcxqsix\n" +
+            "six9jgsrxknfmfv5four4seven\n" +
+            "fourthree1\n" +
+            "1xndxzh\n" +
+            "2znktjrsevenrgvc2tcmbbxzj\n" +
+            "416nineonebgnninetwoqlpglcvcxc\n" +
+            "gone9bjv8\n" +
+            "2gltwof\n" +
+            "hhonencqn2dnzhjpfrs3n59\n" +
+            "fourcjmsf3\n" +
+            "mtwothree82four\n" +
+            "onefivetwonxv5\n" +
+            "xgvfxzfshr1\n" +
+            "nine15\n" +
+            "21rfhzxlngk2fourfm79\n" +
+            "3cdzbnrvqbbrklrsvxktmghrn6eight\n" +
+            "two25gv8sevenkmkprbgzzlkddnine\n" +
+            "fiveeightrscknxv1jlhzgjjrxktcvjgqkqqzjqdjgsixvqlhjghsm\n" +
+            "33nine39pfgsdtptzbqhfjppp4\n" +
+            "7nftkbhcgtthreethree44\n" +
+            "fivefournrqbl3\n" +
+            "43fzvdptqnq\n" +
+            "499four1bdpvvvfnine\n" +
+            "9tt\n" +
+            "381ldxxmdsgtwonine\n" +
+            "pmctnnbdzmxmqrdgcj8sxbpshfzxdnznvtldqj5\n" +
+            "jnhtfjqfive7hvsxqsixnine1\n" +
+            "cnhkqbhtwoonezhdlbxdtdk6\n" +
+            "four5oneonefivehkzcxq9seven4\n" +
+            "onefivexpfour2\n" +
+            "42six2threesixfour5\n" +
+            "8fmqpdhpjv1\n" +
+            "1bnlfgqnseven\n" +
+            "tkzcs9ndthree2366\n" +
+            "qttwone5711vjvonesix\n" +
+            "nrp62ggmtwo87twofbkpbgtlr\n" +
+            "11cgcbfprckdrtzxqlckxhvbjqbslvvnchpkdqfg\n" +
+            "1nhkzggnnxhnrbkzjq3nine6one\n" +
+            "zvhgzgpvll1dkvbdf5fourfgqqdnp\n" +
+            "one1rkpsfddfh6four\n" +
+            "hmfxqb9twol4dpfmz4threelkg\n" +
+            "xlcmzqgrq7threetwo97\n" +
+            "ntwonedz3dbgngsnshb6bdbtspkzzttvhphqdbz7mpkbpchsf\n" +
+            "one586fivethree4ghcgjrqltgeight\n" +
+            "1eightone\n" +
+            "seven96two2hjxp\n" +
+            "9two5bzzfzfive661\n" +
+            "nine12ninefourone8oneightsv\n" +
+            "pdlcdbgsc5\n" +
+            "xnpbsr3fourrgjhdzgbxsfbvhhjlthree69seven\n" +
+            "qtnxqffour6sixfour9cmnxsrjttonej\n" +
+            "psshpgrbhnjhgr7\n" +
+            "428\n" +
+            "7twotwolghmqhkxthreefoursevenzmkzhvs\n" +
+            "13hcnzjhsix2\n" +
+            "7four5nxdq3fivesevenfivesix\n" +
+            "hzfqzc2fourone34\n" +
+            "7tdr46hrdgjlzkptkqhmsffh\n" +
+            "gqc76\n" +
+            "33376\n" +
+            "32three45kvlmcvmmh63slm\n" +
+            "842xbtj\n" +
+            "lvjzkvqthree2six\n" +
+            "64ninentjfiveeightppljppn1d\n" +
+            "four8fzvmnfourtwopggbxv\n" +
+            "fivexftmjtmxdp7\n" +
+            "sevensjmhskjnmpfnfj55xhgchqcgbsixdrtg\n" +
+            "sixccttdcpvklgspscrbronefour3\n" +
+            "foureightnine4jnm\n" +
+            "86twofour\n" +
+            "fqrpnphnqr98nine7\n" +
+            "fivetwo3\n" +
+            "8dbqjkxjfsgpsixsixeightthreepfmtsnk\n" +
+            "9sixonembbhvbmsfseven1\n" +
+            "sixdsvdctxpchvgkggtwocvzvseven8onesix\n" +
+            "5lmbjk7nine7szmvnkmz2\n" +
+            "fiveeightfive7xlcszxsevencrxdfzsmccb\n" +
+            "lhmvzszvbxxq592\n" +
+            "eight814srjh99\n" +
+            "qdqzvx2sixjp\n" +
+            "4fbtjrxs\n" +
+            "9ftbf668sixsjninethggtdncsv\n" +
+            "4ninezzmbfbjn\n" +
+            "75nineonefivesix\n" +
+            "ninethreevntrpltfttnlzgn7\n" +
+            "fivefiveseven4seveneight9three\n" +
+            "89bspmdgzcm\n" +
+            "6jnnmhkfourfive63eightggchjtwonet\n" +
+            "6twocsjssxfnfxbqrqrhdfrlzfldf\n" +
+            "xhlk7xdmg\n" +
+            "64ninesixhhmjhglhp\n" +
+            "6fourkm9mnnrbjpjtwozdgtrsseightwox\n" +
+            "rjrldgmzthree5kqnjmxpmmr1threefiveeightbjjvk\n" +
+            "2bzsevenfour\n" +
+            "pkkrrzlnm31gkfvfjpvhfivefour\n" +
+            "jtnkdkldq285fiveg\n" +
+            "tvzmqone8mqsfeight5\n" +
+            "9nineeight1vnsm6tx6three\n" +
+            "24gnthreebzz9six\n" +
+            "dvcmqppn7\n" +
+            "one5three3ninedqxqljq\n" +
+            "five8gdtthree4jjnhbdkp51gtkmbnjzk\n" +
+            "cvsgrlfdflhjp8dvfourninefive\n" +
+            "113three26\n" +
+            "6dhfrhjthreebslzctwo85vgjbr\n" +
+            "4seveneightzvbrjtvbvzcmzxshl9\n" +
+            "five24kfrninepp7\n" +
+            "onejlx6nsgqcckqfgkstnczpgmzcfx2rbqdvcjpr5\n" +
+            "2fiveoneonetzkqxs95ztchd\n" +
+            "1nineblthree\n" +
+            "xndbmvlqlkq6pkzvzlplbthreethreethree\n" +
+            "sppdbmqndkqj7\n" +
+            "hcdkt8fdlqmkprg11seven\n" +
+            "sevenseven84five6sjbsvkds\n" +
+            "9two3eightone5\n" +
+            "dreightwolpqzcqsmqfiveeighttwoninesg9\n" +
+            "vzplxbbt9rfftfmmvnine49j\n" +
+            "8ninetfvjmjlxtseven3chppcpt2gzfdpdm\n" +
+            "nfbckqn7\n" +
+            "four5threenine\n" +
+            "9threeccgvdstztf4\n" +
+            "one772nineeight\n" +
+            "fourfive2v387\n" +
+            "five9dpbgxxjkg64\n" +
+            "nvngsn9six32fivenine\n" +
+            "pdctqmdvdpqbdqs49pgzfive\n" +
+            "seven5trmnqnqgqprkdkxcsrtmzjccgrtbklnhnfive\n" +
+            "5kpjfc3rt\n" +
+            "47four\n" +
+            "61fourvz3\n" +
+            "3gtzzrsphbrkqgmfmgdhsixdskqqzhfoursx7\n" +
+            "four4rfnhpqblsixcqhlfkdkn6\n" +
+            "nine1nzrqg9\n" +
+            "two5three\n" +
+            "f7trxrqhfpg3fourpprkpvone\n" +
+            "eighteighteighteightsixone2fivefntjsvkln\n" +
+            "992xtfbdstcnlkfxfour1q\n" +
+            "5bhhlkrhjptwoeight2d\n" +
+            "488\n" +
+            "2four8twosevensgtplsfournine6\n" +
+            "8jnsljdgdbbxzvvxrzhv8fourdvvcvmcsq\n" +
+            "zqmthreekdvdd9eightcxkjckgd\n" +
+            "eightninetwoeightfpznmztv722\n" +
+            "bslvfrtgqb3seven\n" +
+            "3fourtxlrxjfskztwoeight5kd\n" +
+            "kjgbpdxbrsv2twosix\n" +
+            "eightfivesgbktt47sixeight3\n" +
+            "4oneninelpfjmmzcsq\n" +
+            "3eightsixseven7sevenxscsrrfc\n" +
+            "18dgvtgskkfoursix\n" +
+            "one87\n" +
+            "386tworhzbhbtonesix3\n" +
+            "516xdqcsdpxpfhzbblg\n" +
+            "nldnine15six59nine\n" +
+            "seventhreegpqqdddh9five\n" +
+            "dkktl5gnrmjgbfsfive7568scfgqvrqs\n" +
+            "glfourseven2sevenqvpc\n" +
+            "nine1cfttktvqjxzbb\n" +
+            "twoqvfzx56one\n" +
+            "eight1lzfkrsclhccxtwo6\n" +
+            "9one5\n" +
+            "1onetwosevensevenfiveztgmhfldthreeone\n" +
+            "4ngnpzvpvdz\n" +
+            "3452\n" +
+            "6lklgpxstsixtwo\n" +
+            "tcpbcspsix4vdlvsqddfvxeight79\n" +
+            "xhgxp7sbnbfsfxntspbncg48fivetwonine\n" +
+            "7eightgmleight9xbzlpgjqsix7jcsvplq\n" +
+            "lmdbvbkpfive3qtkf35\n" +
+            "3xfszvbl\n" +
+            "2sevensevendrzzljmqcr\n" +
+            "1four2\n" +
+            "mnhqcgffllnlhthreegneightcxbhz23\n" +
+            "znrprxdtp9sevenoneightnk\n" +
+            "18ninethreetwo\n" +
+            "fournineftpqcmsix213\n" +
+            "eightlmgrjxdfl5six\n" +
+            "52eight495\n" +
+            "6twogmvhfrrzhkthreegplbmssixseven4\n" +
+            "hvpnvkrmrqfivetwo6dlgtscdmfsq\n" +
+            "ninemseven9seven\n" +
+            "zfqfdz5sixbmlsvzckgvskseven8five\n" +
+            "sixsevenjcmtgqtb1nmnmqggmc95\n" +
+            "sixeight8fourseven\n" +
+            "6tppqxqsmljd2rjfffxbeight86\n" +
+            "69two1seven\n" +
+            "813three1eight\n" +
+            "rttddjcrmc52eightcsevenvhxc\n" +
+            "kvpgfbnrkzseven2fourgrghxjplqbgnbvpznbdhrxgdqzzkdgfdbqggbmfg\n" +
+            "seven8eightfive\n" +
+            "3tgcnpp\n" +
+            "316ksn9twohrtgbcmcrdn\n" +
+            "1ccsfttwosix\n" +
+            "eight1sixnine3cfvzlfh\n" +
+            "5twoxhmlzmvszm\n" +
+            "4ninefourhvqznsjng2\n" +
+            "jzvdcjsdpmrdzbkvdfourfivefour9\n" +
+            "lnlhncjthreeseven5\n" +
+            "six8seven4seven4qtncq\n" +
+            "2threesixjzdzmlfsdmqc\n" +
+            "threenlrd33\n" +
+            "three3sqfmq7nine\n" +
+            "jrgvgjlnlthree78kf\n" +
+            "tgngldxnkzf2one8\n" +
+            "mpmeight92seveneightsix\n" +
+            "tninethqhpzlkzhgmkqsix574fsd\n" +
+            "seven8five1seventhree5\n" +
+            "jf533reightrxjdrqhsix\n" +
+            "mxvnxmxmnvkfqcnzzpc1twoone3\n" +
+            "four7twodlfxxrsix\n" +
+            "gfflmcdlsix5fgthree\n" +
+            "threecnqdtbvjxmgndzkkninedclqh78zk\n" +
+            "fivesg8dhhthspm\n" +
+            "sixmbsnvvzncxz4one\n" +
+            "8hkrb3oneightj\n" +
+            "sixsix3gqtvqqnmtph8threexchpjtcxfj\n" +
+            "8399\n" +
+            "2hzngcnshdktwovcxchdqrh\n" +
+            "five6ddcnpsdlllrmmnvmmsix\n" +
+            "ninerxfpfsixone9\n" +
+            "xrjphdrq3kdvlg5twoks\n" +
+            "threegnklthree1rbthree3\n" +
+            "fivenine1tftcphztmfthj23\n" +
+            "3h75eightfdnz\n" +
+            "twoone4eight\n" +
+            "4783five\n" +
+            "threeqsbhznhfd2jgjjggt8hmbdhstsix\n" +
+            "seven2sixthreeglzvrcvlhfivenine\n" +
+            "9jht8xdhfrsjbhthree11\n" +
+            "seven9twosix\n" +
+            "2rzzmzgbqggbqhlsdt2seven\n" +
+            "733eightfpljbfm4clqccf1fjgkgxdktz\n" +
+            "ltvlb331jmp1sk\n" +
+            "5fourseven2kdd2vfour\n" +
+            "4sevenone18\n" +
+            "lsscqvt7seventhreevcqvpjndvltwobkv5qgfhczmhxg\n" +
+            "659five\n" +
+            "nzl231pzllsvcmpncslfmseight\n" +
+            "nine8zsnkrnine\n" +
+            "rlgzb95eightxmj\n" +
+            "5sixsixkstxnclx6\n" +
+            "jkkxmn34nttqsrhdtkjl\n" +
+            "2mjkqdlfrjjnvbv\n" +
+            "fourhqbhbxfvzkrplxqkckl55onethree5\n" +
+            "bffncpr8tclcgtwo2\n" +
+            "nbqtkrhnmrh9hvctrhjzvbqrs\n" +
+            "vfxbqqxlpx1sixnine9\n" +
+            "d2sixsixsevenseven\n" +
+            "jtwonethreesixseven8fiveseven\n" +
+            "4mlvbpnxzmsrnzvsjlpbcxgsmvcqdmqqlrhj15\n" +
+            "bskfxdmsixeightnbtdfpbtmgpddrkkczr9one\n" +
+            "ng8eightfour5\n" +
+            "53ccpsnxndthreegcpjgkzbmvcrbfive\n" +
+            "4one2threedmb\n" +
+            "9kfscngdfrnine\n" +
+            "9four32skfdjfour22ltv\n" +
+            "pgfourrntwo985\n" +
+            "seven5cpvbsonefour\n" +
+            "seven7onefive\n" +
+            "9pqspsbsneight6nv\n" +
+            "eightdbsevenqdsh3zjgmlxlgpnjxjt\n" +
+            "vcj7fzhmjnqjdds\n" +
+            "rczjzrsrzfiverbzmpcjthree7\n" +
+            "cvdqclthr9\n" +
+            "twosixonefour1sevenmsb\n" +
+            "tdrgmvlm343938qpvjd\n" +
+            "8nine33fivethree\n" +
+            "5hpbhcpkkgfour7sevennine\n" +
+            "1m\n" +
+            "rstwonevngtsslzn2\n" +
+            "sevenfiveoneninehfmdseven9bvfqbvvhbm\n" +
+            "gonetwothreenlqxbpfpxs1pfrkgzjjk\n" +
+            "58three768qsrffkxp\n" +
+            "eight4sixsevenfrjcfour866\n" +
+            "4seven3hpjfllmhhncq\n" +
+            "fivesnbldvhsixdl4\n" +
+            "4twofive\n" +
+            "rlrj15\n" +
+            "2sixpqspdfssix\n" +
+            "five32lxgrrrbnntpqhhxcgcztqgtbsz\n" +
+            "ncvnfivecnkdpjjpbh93ninejvqslxxpm7\n" +
+            "kdfcfqrn9eightonebsix2prnbrmj\n" +
+            "gsixninels229dsflfvnine\n" +
+            "zjxvkq7cvlcggkskcccmcsconerszqnmfghnine\n" +
+            "4four1tlfnjgqzz\n" +
+            "78twonine2kzhqdgx169\n" +
+            "bfive2fivegktdzmtlbf3jlfzdktsg\n" +
+            "35eightfive9six9qsnq\n" +
+            "3twobhf2fjvgr2\n" +
+            "2ggns35nsbcldmone\n" +
+            "jpdqktwo4tdvh9sxslths7\n" +
+            "ggkplvtgctpgzmxbmdt3btqmgsnmvqqxv\n" +
+            "5kntpbjz\n" +
+            "nfqjskkntdlbsjzsjxvmjbfivemcbhkzrjdhvfqzqkbbbqv7p\n" +
+            "five2nqcj7sixsixthreeh\n" +
+            "fg3one\n" +
+            "4nineb1threesvbks2lp\n" +
+            "xxlq9\n" +
+            "rptjtqdgfghmxhv4239gptndhvjqd\n" +
+            "4lbbtzvcxgxnfbbv7\n" +
+            "eightzzmcxmthreekkmq919\n" +
+            "7jpdvzs1threesixhctfdzpdlmxqgz\n" +
+            "97bzcqhdnpvmonesix4pfpsevenbjvctzqchd\n" +
+            "tlbxlftmc73nineeightzktqfzqhxx9nine\n" +
+            "5six4\n" +
+            "4bxgmpcd1seven4grrdnine3two\n" +
+            "1lsfpdnmlzlkczfdqpbkdb5pjns6lqqnpvkrjsg\n" +
+            "hzxppjnkhbtqnrqpleightggcgbrhm3\n" +
+            "7bzz199threecmnrn\n" +
+            "five214qcppmkvzdq5six\n" +
+            "fiveeightgvqnvcmgsthreefive2\n" +
+            "eightfour6kds2\n" +
+            "eight1seven5\n" +
+            "xone3fivetwofivesix3qqqsvhmt\n" +
+            "twogrfrrmkc4zkrpsp9two\n" +
+            "twofourfour8\n" +
+            "sevenlfive7psixonefour\n" +
+            "kfxfgt98jvdrx\n" +
+            "45gzmzzxh\n" +
+            "2gvxgmtone7twoxqninenrqr7\n" +
+            "twotwo1onexgtmdnvss\n" +
+            "4517seven\n" +
+            "7onensevenj6555\n" +
+            "fivesix9nine\n" +
+            "329lbrn\n" +
+            "xkzrhlcrfmrmfqlseven3five\n" +
+            "2877rfplvjbvjj15\n" +
+            "mzzfdftbninesxsdxltwo79bsdvnine\n" +
+            "79tfnmsevennnmsdrgzlsg\n" +
+            "kgmhkkq64threesixeight44mskzftd\n" +
+            "vnjz8onemdnjfzmqcgxqonemspchrxlggoneightptg\n" +
+            "83hqrd1sixsevennine\n" +
+            "fcbdjhdndjchqlvdv2sixoneseven4fhfhxrrrxeightwotpt\n" +
+            "ksfbthjpczlghsgkfive6\n" +
+            "663krqxqlznine8\n" +
+            "sevennineeight1nsk8mvblkzzz\n" +
+            "1seven74\n" +
+            "tvqlxnzn7\n" +
+            "mbrphrdzsvnlpqlfdfpqrmf2\n" +
+            "two9pbxbt1fivecpp\n" +
+            "six2onelffxlvkh8sixfive3six\n" +
+            "fourdkqzfive9\n" +
+            "reightwobp9bzpx71six\n" +
+            "2mconefour\n" +
+            "6fjpccfour\n" +
+            "seventhree8one293\n" +
+            "six3khrpvrhzgthree8two\n" +
+            "7357sixhsbgkkkfljlrmbx\n" +
+            "75twoeightfourbcgeight\n" +
+            "ninenineone2two2\n" +
+            "gfqhnhjgt762zfgpzdzdhh1\n" +
+            "nghtwone5sjbhtzgseventwomdm\n" +
+            "gphcvbvxfxdbnqcttt37\n" +
+            "qone3nineqfqdcfc\n" +
+            "3eightnineonesixslhkjqgmreight\n" +
+            "two5dfive56\n" +
+            "seven9rk\n" +
+            "9six6seven\n" +
+            "1crhxcgsfqcfvgvrr6nine7tworzbvh\n" +
+            "skbfn94hskkfzsvqj4eight\n" +
+            "mbtkcgqj4mbfour8\n" +
+            "blghkbbgx3\n" +
+            "6oneeightnine6\n" +
+            "1threesix\n" +
+            "1jzlbxmxbseven39\n" +
+            "65nineszqvcgghgg\n" +
+            "threepcjrl1\n" +
+            "n346seven4\n" +
+            "oneeight3\n" +
+            "7vtcgkpgqqzcxdxrjmpbjone1pvxcjjtpdtcprkq5mqxkjpbqkd\n" +
+            "32skznxsevenone3\n" +
+            "sevenninesrrcmxdgnq2vmlvdhj\n" +
+            "2nine3vcfivemb5six2\n" +
+            "5hx78fournine669\n" +
+            "qszds3\n" +
+            "six4seven2one87four\n" +
+            "plxfoursc41five\n" +
+            "sixfour9fivernqcknsbgpfrzmgz3\n" +
+            "onesevenf78threedzvlm1\n" +
+            "xlkdlhlk23four\n" +
+            "8ninejseven5";
+
+    static String shortInput = "two1nine\n" +
+            "eightwothree\n" +
+            "abcone2threexyz\n" +
+            "xtwone3four\n" +
+            "4nineeightseven2\n" +
+            "zoneight234\n" +
+            "7pqrstsixteen\n";
+//    29, 83, 13, 24, 42, 14, and 76 = 281
+
+
+    public static int calibrationValues(String input) {
+
+        int total = 0;
+        char firstDigit = 'a';
+        char lastDigit = 'a';
+
+        List<String> inputList = Arrays.stream(input.split("\n")).toList();
+        for (String line : inputList) {
+            for (int i = 0; i < line.length(); i++) {
+                if (line.charAt(i) >= 48 && line.charAt(i) <= 57) {
+                    firstDigit = line.charAt(i);
+                    break;
+                }
+                if (line.startsWith("one", i)) {
+                    firstDigit = '1';
+                    break;
+                } else if (line.startsWith("two", i)) {
+                    firstDigit = '2';
+                    break;
+                } else if (line.startsWith("three", i)) {
+                    firstDigit = '3';
+                    break;
+                } else if (line.startsWith("four", i)) {
+                    firstDigit = '4';
+                    break;
+                } else if (line.startsWith("five", i)) {
+                    firstDigit = '5';
+                    break;
+                } else if (line.startsWith("six", i)) {
+                    firstDigit = '6';
+                    break;
+                } else if (line.startsWith("seven", i)) {
+                    firstDigit = '7';
+                    break;
+                } else if (line.startsWith("eight", i)) {
+                    firstDigit = '8';
+                    break;
+                } else if (line.startsWith("nine", i)) {
+                    firstDigit = '9';
+                    break;
+                } else if (line.startsWith("zero", i)) {
+                    firstDigit = '0';
+                    break;
+                }
+            }
+            for (int j = line.length() - 1; j >= 0; j--) {
+                if (line.charAt(j) >= 48 && line.charAt(j) <= 57) {
+                    lastDigit = line.charAt(j);
+                    break;
+                }
+                if (line.startsWith("one",j)) {
+                    lastDigit = '1';
+                    break;
+                } else if (line.startsWith("two",j)) {
+                    lastDigit = '2';
+                    break;
+                } else if (line.startsWith("three",j)) {
+                    lastDigit = '3';
+                    break;
+                } else if (line.startsWith("four",j)) {
+                    lastDigit = '4';
+                    break;
+                } else if (line.startsWith("five",j)) {
+                    lastDigit = '5';
+                    break;
+                } else if (line.startsWith("six",j)) {
+                    lastDigit = '6';
+                    break;
+                } else if (line.startsWith("seven",j)) {
+                    lastDigit = '7';
+                    break;
+                } else if (line.startsWith("eight",j)) {
+                    lastDigit = '8';
+                    break;
+                } else if (line.startsWith("nine",j)) {
+                    lastDigit = '9';
+                    break;
+                } else if (line.startsWith("zero",j)) {
+                    lastDigit = '0';
+                    break;
+                }
+            }
+            int semiValue = Integer.parseInt(String.valueOf(firstDigit - '0') + String.valueOf(lastDigit - '0'));
+            total += semiValue;
+        }
+        return total;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(calibrationValues(input));
+        System.out.println(calibrationValues(shortInput));
+    }
+}
